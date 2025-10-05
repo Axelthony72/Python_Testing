@@ -1,5 +1,5 @@
 import json
-from flask import Flask,render_template,request,redirect,flash,url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 
 
 def loadClubs():
@@ -24,11 +24,14 @@ clubs = loadClubs()
 def index():
     return render_template('index.html')
 
-@app.route('/showSummary',methods=['POST'])
+@app.route('/showSummary', methods=['POST'])
 def showSummary():
-    club = [club for club in clubs if club['email'] == request.form['email']][0]
-    return render_template('welcome.html',club=club,competitions=competitions)
-
+    try:
+        club = [c for c in clubs if c['email'] == request.form['email']][0]
+        return render_template('welcome.html', club=club, competitions=competitions)
+    except IndexError:
+        flash("Sorry, that email is not found.")
+        return redirect(url_for('index'))
 
 @app.route('/book/<competition>/<club>')
 def book(competition,club):

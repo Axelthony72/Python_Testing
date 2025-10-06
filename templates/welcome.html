@@ -5,15 +5,18 @@
 {% block content %}
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2>Welcome, {{club['name']}}</h2>
-        <a href="{{url_for('logout')}}" class="btn btn-outline-danger">Logout</a>
+        <div>
+            <a href="{{ url_for('bookings', club_name=club['name']) }}" class="btn btn-info">My Bookings</a>
+            <a href="{{url_for('logout')}}" class="btn btn-outline-danger">Logout</a>
+        </div>
     </div>
     <hr>
 
-    {% with messages = get_flashed_messages() %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             <ul class="list-unstyled">
-            {% for message in messages %}
-                <li class="alert alert-info" role="alert">{{ message }}</li>
+            {% for category, message in messages %}
+                <li class="alert alert-{{ category }}" role="alert">{{ message }}</li>
             {% endfor %}
             </ul>
         {% endif %}
@@ -30,7 +33,9 @@
                 <small class="text-muted">Date: {{comp['date']}}</small><br>
                 <small class="text-muted">Number of Places: {{comp['numberOfPlaces']}}</small>
             </div>
-            {% if comp['numberOfPlaces']|int > 0 %}
+            {% if comp['is_past'] %}
+                <span class="badge bg-secondary">Finished</span>
+            {% elif comp['numberOfPlaces']|int > 0 %}
                 <a href="{{ url_for('book',competition=comp['name'],club=club['name']) }}" class="btn btn-success btn-sm">Book Places</a>
             {% else %}
                 <span class="badge bg-warning text-dark">Full</span>

@@ -1,17 +1,22 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking for {{competition['name']}} || GUDLFT</title>
-</head>
-<body>
-    <h2>{{competition['name']}}</h2>
-    Places available: {{competition['numberOfPlaces']}}
-    <form action="/purchasePlaces" method="post">
+{% extends "base.html" %}
+
+{% block title %}Booking for {{competition['name']}} | GUDLFT Registration{% endblock %}
+
+{% block content %}
+    <h2>Booking for: {{competition['name']}}</h2>
+    <p class="lead">Places available: <span class="badge bg-info text-dark">{{competition['numberOfPlaces']}}</span></p>
+    
+    <form action="/purchasePlaces" method="post" class="card p-4 shadow-sm">
         <input type="hidden" name="club" value="{{club['name']}}">
         <input type="hidden" name="competition" value="{{competition['name']}}">
-        <label for="places">How many places?</label><input type="number" name="places" id=""/>
-        <button type="submit">Book</button>
+        
+        <div class="mb-3">
+            <label for="places" class="form-label">How many places?</label>
+            <input type="number" name="places" id="places" class="form-control" min="1" max="{{ competition['numberOfPlaces'] }}" required/>
+            <small class="form-text text-muted">You can book up to {{ competition['numberOfPlaces'] }} places.</small>
+        </div>
+        <button type="submit" class="btn btn-primary">Book</button>
     </form>
-</body>
-</html>
+    <hr class="my-4">
+    <a href="{{ url_for('showSummary') }}" class="btn btn-secondary">Back to Competitions</a>
+{% endblock %}

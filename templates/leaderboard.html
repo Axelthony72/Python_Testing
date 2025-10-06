@@ -1,35 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Leaderboard</title>
-    <style>
-        table, th, td {
-          border: 1px solid black;
-          border-collapse: collapse;
-          padding: 5px;
-        }
-    </style>
-</head>
-<body>
-    <h1>Club Points Leaderboard</h1>
-    <a href="{{ url_for('index') }}">Back to Home</a>
+{% extends "base.html" %}
+
+{% block title %}Leaderboard | GUDLFT Registration{% endblock %}
+
+{% block content %}
+    <h1 class="text-center mb-4">Club Points Leaderboard</h1>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary mb-3">Back to Home</a>
     <hr/>
-    <table>
-        <thead>
-            <tr>
-                <th>Club Name</th>
-                <th>Points Available</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for club in clubs %}
-            <tr>
-                <td>{{ club['name'] }}</td>
-                <td>{{ club['points'] }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</body>
-</html>
+    <div class="card p-4 shadow-sm">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Club Name</th>
+                    <th scope="col">Points Available</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for club in clubs %}
+                <tr>
+                    <td>{{ club['name'] }}</td>
+                    <td><span class="badge bg-primary">{{ club['points'] }}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

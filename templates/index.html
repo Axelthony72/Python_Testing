@@ -1,26 +1,33 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GUDLFT Registration</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}Welcome | GUDLFT Registration{% endblock %}
+
+{% block content %}
+    <h1 class="text-center mb-4">Welcome to the GUDLFT Registration Portal!</h1>
+    
     {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul class="flash">
-        {% for message in messages %}
-          <li>{{ message }}</li>
-        {% endfor %}
-        </ul>
-      {% endif %}
+        {% if messages %}
+            <ul class="list-unstyled">
+            {% for message in messages %}
+                <li class="alert alert-info" role="alert">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
     {% endwith %}
 
-    <h1>Welcome to the GUDLFT Registration Portal!</h1>
-    Please enter your secretary email to continue:
-    <form action="showSummary" method="post">
-        <label for="email">Email:</label>
-        <input type="email" name="email" id=""/>
-        <button type="submit">Enter</button>
-    </form>
-</body>
-</html>
+    <div class="card p-4 shadow-sm">
+        <p class="lead">Please enter your secretary email to continue:</p>
+        <form action="/showSummary" method="post">
+            <div class="mb-3">
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" name="email" id="email" class="form-control" placeholder="name@example.com" required/>
+            </div>
+            <button type="submit" class="btn btn-primary">Enter</button>
+        </form>
+    </div>
+    
+    <hr class="my-4">
+    <div class="text-center">
+        <a href="{{ url_for('leaderboard') }}" class="btn btn-secondary">View Club Points Leaderboard</a>
+    </div>
+{% endblock %}

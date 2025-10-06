@@ -1,36 +1,41 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Summary | GUDLFT Registration</title>
-</head>
-<body>
-        <h2>Welcome, {{club['email']}} </h2><a href="{{url_for('logout')}}">Logout</a>
+{% extends "base.html" %}
 
-    {% with messages = get_flashed_messages()%}
-    {% if messages %}
-        <ul>
-       {% for message in messages %}
-            <li>{{message}}</li>
-        {% endfor %}
-       </ul>
-    {% endif%}
-    Points available: {{club['points']}}
-    <h3>Competitions:</h3>
-    <ul>
-        {% for comp in competitions%}
-        <li>
-            {{comp['name']}}<br />
-            Date: {{comp['date']}}</br>
-            Number of Places: {{comp['numberOfPlaces']}}
-            {%if comp['numberOfPlaces']|int >0%}
-            <a href="{{ url_for('book',competition=comp['name'],club=club['name']) }}">Book Places</a>
-            {%endif%}
+{% block title %}Summary | GUDLFT Registration{% endblock %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Welcome, {{club['name']}}</h2>
+        <a href="{{url_for('logout')}}" class="btn btn-outline-danger">Logout</a>
+    </div>
+    <hr>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="list-unstyled">
+            {% for message in messages %}
+                <li class="alert alert-info" role="alert">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <h3 class="mt-4">Points available: <span class="badge bg-primary">{{club['points']}}</span></h3>
+    
+    <h3 class="mt-4">Competitions:</h3>
+    <ul class="list-group">
+        {% for comp in competitions %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="mb-1">{{comp['name']}}</h5>
+                <small class="text-muted">Date: {{comp['date']}}</small><br>
+                <small class="text-muted">Number of Places: {{comp['numberOfPlaces']}}</small>
+            </div>
+            {% if comp['numberOfPlaces']|int > 0 %}
+                <a href="{{ url_for('book',competition=comp['name'],club=club['name']) }}" class="btn btn-success btn-sm">Book Places</a>
+            {% else %}
+                <span class="badge bg-warning text-dark">Full</span>
+            {% endif %}
         </li>
-        <hr />
         {% endfor %}
     </ul>
-    {%endwith%}
-
-</body>
-</html>
+{% endblock %}
